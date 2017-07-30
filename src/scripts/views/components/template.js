@@ -6,7 +6,6 @@ class Template extends Component {
     return (
       <div className='main-content'>
         <Nav />
-
         <div className='container'>
           {this.props.children}
         </div>

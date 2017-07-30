@@ -19,7 +19,7 @@ export let upload = function upload(files) {
 // Private methods
 let getRootUrl = function getRootUrl(path) {
   // FIXME: change to env url
-  let url = 'http://localhost:4000';
+  let url = 'http://api.clairedeanart.com';
   if (path[0] !== '/')
     path = '/' + path
   return url + path;
