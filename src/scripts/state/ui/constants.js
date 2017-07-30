@@ -1,0 +1,6 @@
+export default {
+
+  IS_LOADING: 'IS_LOADING',
+  IS_LOADING_COMPLETE: 'IS_LOADING_COMPLETE',
+
+}
