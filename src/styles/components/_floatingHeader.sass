@@ -1,0 +1,62 @@
+$bounce: cubic-bezier(.96,-.25,0,1.15)
+$floatingHeaderHeight: 85px
+
+.floating-header--margin
+  // height: $floatingHeaderHeight
+  width: 100vw
+  margin-bottom: $floatingHeaderHeight
+
+.floating-header
+  // width: 80%
+  position: fixed
+  height: $floatingHeaderHeight
+  width: 100%
+  z-index: 2000
+  top: 0
+  left: 0
+  right: 0
+  background-color: $white
+  overflow: hidden
+  display: flex
+  justify-content: center
+  transition: all 300ms ease-in-out
+
+  &.floating-header--float
+    box-shadow: $menu-shadow
+
+  .floating-header__row
+    // width: 100%
+    display: flex
+    flex-direction: row
+
+
+  .floating-header__inner
+    padding-left: ms(1)
+    padding-right: ms(1)
+    display: flex
+    justify-content: center
+    align-items: center
+    flex-direction: row
+    height: 100%
+    position: absolute
+    transform: translateY(0)
+    transition: all 300ms ease-in-out
+    // width: 100%
+  .floating-header__menu
+    margin-left: ms(1)
+    margin-right: ms(1)
+    border-bottom: solid 1px $white
+    // border-bottom: solid 1px $secondary
+    transition: all 220ms ease-in
+    &.floating-header__menu--active
+      transform: scale(1.1)
+      border-bottom: solid 1px $secondary
+  .floating-header__edit-mode
+    transform: translateY(100px) scale(0.9)
+    transition: all 300ms ease-in-out
+
+  &.floating-header--edit
+    .floating-header__inner
+      transform: translateY(-100px) scale(0.9)
+    .floating-header__edit-mode
+      transform: translateY(0)

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import cx from 'classnames';
+import _ from 'underscore'
 
 // $untouched The field has not been touched yet
 // $touched The field has been touched
@@ -38,6 +39,12 @@ class Input extends Component {
       value: value
     });
     this.props.handleUserInput(this.key, value);
+  }
+
+  handleKeyPress = (e) => {
+    if (e.which === 13 || e.key === 'Enter' && _.isFunction(this.props.submitOnEnter)) {
+      this.props.submitOnEnter()
+    }
   }
 
   setHasContent(state) {
@@ -86,6 +93,7 @@ class Input extends Component {
         <input
           value={this.state.value}
           onChange={this.handleChange}
+          onKeyPress={this.handleKeyPress}
           type={type}
           name={label.toLowerCase()}/>
         <label htmlFor={label.toLowerCase()}>{label}</label>
@@ -112,7 +120,8 @@ Input.defaultProps = {
   half: false,
   className: '',
   id: '',
-  isRequired: false
+  isRequired: false,
+  submitOnEnter: false,
 };
 
 export default Input;

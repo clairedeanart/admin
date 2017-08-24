@@ -1,0 +1,68 @@
+.gallery__grid
+  margin-bottom: 65px
+  .grid-sizer,
+  .grid__item
+    margin-bottom: 5px
+    width: 100%
+    +target(sm)
+      width: calc(50% - 5px)
+    +target(md)
+      width: calc(25% - 5px)
+    +target(lg)
+      width: calc(25% - 5px)
+
+  .grid__item
+    float: left
+
+  .grid__item img
+    display: block
+    max-width: 100%
+
+
+.grid__item
+  cursor: zoom-in
+  transition: all 120ms ease-in
+  .grid__item__menu
+    // background-color: rgba(255, 255, 255, 0.6)
+    position: absolute
+    height: 30%
+    width: 100%
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: flex-start
+    z-index: -100
+    transition: all 120ms ease-in-out
+    opacity: 0
+  .grid__item__menu-item
+    // margin-top: ms(1)
+    // margin-bottom: ms(1)
+    display: flex
+    flex-direction: row
+    align-items: flex-start
+    overflow: hidden
+    max-height: 50px
+    i
+      font-size: 25px
+      margin-left: ms(0)
+    h4
+      margin-left: ms(2)
+  &:hover
+    // transform: scale(1.009)
+    // z-index: 1000
+  &.grid__item--hover
+    .grid__item__menu
+      background-color: rgba(255, 255, 255, 0.7)
+      z-index: 1000
+      opacity: 1
+      //
+      // .grid__item__menu-item
+      //   display: flex
+      //   flex-direction: row
+      //   align-items: flex-start
+      //
+      //   i
+      //     font-size: 25px
+
+.edit-field-wrapper
+  cursor: text

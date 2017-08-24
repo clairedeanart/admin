@@ -66,9 +66,10 @@ $font-family: Calibre, sans-serif !default
 
 // Mixin for responding to different sizes
 $targets: xs 12, sm 14, md 16, lg 18, xl 20
-
-@mixin target($target)
-  @each $candidate in $targets
-    @if $target == nth($candidate, 1)
-      @media screen and (min-width: #{ms(nth($candidate, 2))})
-        @content
+// $targets2: xs 12, sm 14, md 16, lg 18, xl 20
+//
+// @mixin target($target)
+//   @each $candidate in $targets2
+//     @if $target == nth($candidate, 1)
+//       @media screen and (min-width: #{ms(nth($candidate, 2))})
+//         @content

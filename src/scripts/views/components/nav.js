@@ -11,12 +11,13 @@ class Nav extends Component {
             <img src='/assets/logos/black/png/small-v2.png'/>
           </Link>
         </div>
+
         <ul className='navigation__menu'>
           <li className='navigation__menu__item'>
-            <Link to="/upload">Upload</Link>
+            <Link to="/content/edit/new">Content</Link>
           </li>
           <li className='navigation__menu__item'>
-            <Link to="/content">Content</Link>
+            <Link to="/upload">Upload</Link>
           </li>
           <li className='navigation__menu__item'>
             <Link to="/settings">Settings</Link>

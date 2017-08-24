@@ -1,0 +1,82 @@
+$bounce: cubic-bezier(.96,-.25,0,1.15)
+
+.lightbox
+  height: 100%
+  width: 100%
+  position: fixed
+  top: 0
+  bottom: 0
+  left: 0
+  right: 0
+  z-index: 1000
+
+  .lightbox__close-icon__wrapper
+    z-index: 101
+    bottom: 50px
+    right: 50px
+    position: fixed
+    padding: 1px
+    opacity: 0
+    height: 20px
+    width: 20px
+    background-color: rgba(0,0,0,0.75)
+    border-radius: 100px
+    display: flex
+    align-items: center
+    justify-content: center
+    cursor: pointer
+
+    .lightbox__close-icon
+      font-size: 40px
+      color: $text-white
+      font-family: 'Permanent Marker', cursive
+      margin-bottom: 2px
+      user-select: none
+
+  .lightbox__backdrop
+    height: 100%
+    width: 100%
+    background-color: rgba(0,0,0,0)
+    display: flex
+    justify-content: center
+    align-items: center
+
+  .lightbox__backdrop
+    cursor: zoom-out
+  .lightbox__image__wrapper
+    cursor: initial
+
+  .lightbox__backdrop
+    transition: all 500ms ease
+  .lightbox__close-icon__wrapper
+    transition: all 600ms $bounce
+  .lightbox__image__wrapper
+    transition: all 440ms $bounce
+  .lightbox__image
+    transition: transform 440ms $bounce 100ms
+
+  &.lightbox--fade-in
+    .lightbox__backdrop, .lightbox__close-icon__wrapper
+      opacity: 1
+      background-color: rgba(0,0,0,0.55)
+
+  .lightbox__image__wrapper
+    height: 100vh
+    display: flex
+    flex-direction: row
+    justify-content: center
+    align-items: center
+
+    .lightbox__image
+
+  .lightbox__new-image
+    // position: fixed
+    // top: 0
+    // right: 0
+    // bottom: 0
+    // left: 0
+    // height: 100%
+    // width: 100%
+    transition: all 500ms ease-out
+
+  // &.lightbox--fade-in

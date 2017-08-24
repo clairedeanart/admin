@@ -1,4 +1,6 @@
 import request from 'superagent';
+// const API_URL = 'http://api.clairedeanart.com'
+const API_URL = 'http://localhost:4000';
 
 export let get = function get(route, query) {
   return makeRequest('get', route)
@@ -19,7 +21,7 @@ export let upload = function upload(files) {
 // Private methods
 let getRootUrl = function getRootUrl(path) {
   // FIXME: change to env url
-  let url = 'http://api.clairedeanart.com';
+  let url = API_URL;
   if (path[0] !== '/')
     path = '/' + path
   return url + path;

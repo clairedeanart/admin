@@ -57,15 +57,16 @@ class Login extends Component {
                   type='email'
                   iconClassName='icon-user-secret'
                   handleUserInput={this.handleInput.bind(this)}
-                  />
+                />
               </div>
               <div className='col-xs-12'>
                 <Input
                   label='Password'
                   type='password'
                   iconClassName='icon-lock'
+                  submitOnEnter={this.login}
                   handleUserInput={this.handleInput.bind(this)}
-                  />
+                />
               </div>
             </div>
           </div>

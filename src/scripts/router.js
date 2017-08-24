@@ -17,6 +17,7 @@ import Login from './views/login';
 import Home from './views/home';
 import Content from './views/content';
 import Upload from './views/upload';
+import Gallery from './views/gallery/layout';
 import Settings from './views/settings';
 
 class Root extends Component {
@@ -40,7 +41,16 @@ class Root extends Component {
         <Route path="/" component={Template} onEnter={this.authenticate}>
           <IndexRoute component={Home}/>
           <Route path="upload" component={Upload}/>
-          <Route path="content" component={Content}/>
+          <Route path="content" component={Content}>
+            <IndexRoute component={Content}/>
+            <Route path="upload" component={Upload} />
+            <Route path="edit">
+              <IndexRoute component={Gallery}/>
+              <Route path="new" component={Gallery} type='new'/>
+              <Route path="live" component={Gallery} type='live' />
+              <Route path="hidden" component={Gallery} type='hidden' />
+            </Route>
+          </Route>
           <Route path="settings" component={Settings}/>
         </Route>
       </Router>

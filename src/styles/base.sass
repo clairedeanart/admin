@@ -10,7 +10,7 @@
 
 $text-color: #080507
 $text-white: #F3F3F3
-$white: #F3F3F3
+$white: lighten(#F3F3F3, 15%)
 $primary: #513F65
 $primary-pop: #513F65
 $secondary: #60712F
@@ -63,12 +63,16 @@ $input-height: ms(1) + (2 * ms(-3)) + ms(-7)
 $font-family: Calibre, sans-serif !default
 
 // Mixin for responding to different sizes
-$targets: xs 12, sm 14, md 16, lg 18, xl 20
+// $targets: xs 12, sm 14, md 16, lg 18, xl 20
 
 $border-radius: ms(-6)
 
+$targets: xs 12, sm 14, md 16, lg 18, xl 20
+
+// Handles media screen targets only
+$targetsWindow: xs 10, sm 12, md 14, lg 16, xl 18
 @mixin target($target)
-  @each $candidate in $targets
+  @each $candidate in $targetsWindow
     @if $target == nth($candidate, 1)
       @media screen and (min-width: #{ms(nth($candidate, 2))})
         @content
@@ -80,8 +84,12 @@ body
   left: 0
   height: 100vh
   width: 100vw
+  &.no-scroll
+    overflow: hidden
 *
   font-family: 'Titillium Web', sans-serif
+  // font-size: ms(1)
+
 
 @import standard/base/grid
 @import standard/base/reset
@@ -91,3 +99,6 @@ body
 @import pages/login
 @import components/navigation
 @import components/dropzone
+@import components/gallery
+@import components/lightbox
+@import components/floatingHeader
