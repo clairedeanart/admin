@@ -37,8 +37,6 @@ class GalleryImage extends Component {
     state[`edit${key}`] = !state[`edit${key}`]
     if (this.nameInput)
       this.nameInput.focus()
-
-
     this.setState( state );
   }
 
