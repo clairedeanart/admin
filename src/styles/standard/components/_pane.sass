@@ -11,14 +11,14 @@
     .pane__content
       overflow: hidden
       max-height: 9999px
-      transition: max-height 220ms ease-in-out
+      transition: max-height 220ms $smooth
     &.pane--collapse
       margin-top: ms(-5)
       margin-bottom: ms(-5)
       .pane__content
         max-height: 0
         padding: 0
-        transition: padding 20ms ease-in-out
+        transition: padding 20ms $smooth
 
 
 .pane > .list-group

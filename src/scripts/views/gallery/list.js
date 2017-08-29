@@ -6,12 +6,12 @@ import Lightbox from '../components/lightbox';
 import Masonry from 'react-masonry-component';
 import _ from 'underscore';
 import cx from 'classnames';
-
 import Item from './item';
 
 class Gallery extends Component {
 
   constructor(props) {
+
   	super(props);
   	this.state = {
       lightboxOpen: false,
@@ -26,12 +26,12 @@ class Gallery extends Component {
   }
 
   openLightbox(image, index, e) {
-    this.props.openLightbox(image, e.target);
+    this.props.openLightbox(image, this.props.type);
     this.setState({
       lightboxOpen: !this.state.lightboxOpen,
       image: {
         data: image,
-        elem: e.target,
+        elem: e && e.target ? e.target : {},
       }
     });
   }
@@ -51,6 +51,7 @@ class Gallery extends Component {
   renderImage(image, index) {
     return (
       <Item
+        key={`image-render-${index}${image.id}`}
         image={image}
         index={index}
         openLightbox={this.openLightbox.bind(this, image, index)}
@@ -59,17 +60,32 @@ class Gallery extends Component {
   }
 
   render() {
-    return (
-      <div>
+    const isEmpty = this.props.list.length < 1;
+    let list;
+    if (isEmpty) {
+      list = (
+        <div>
+          No images here
+        </div>
+      )
+    } else {
+      list = (
         <Masonry
           className='gallery__grid'
           updateOnEachImageLoad={true}
           options={{
             gutter: 5,
             transitionDuration: '0.2s',
-          }}>
+          }}
+          ref={(c) => {this.masonry = this.masonry || c.masonry;}}>
           { _.map(this.props.list, this.renderImage) }
         </Masonry>
+      )
+    }
+
+    return (
+      <div>
+        { list }
         <Lightbox
           image={this.state.image}
           images={this.props.list}

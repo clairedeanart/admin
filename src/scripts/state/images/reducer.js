@@ -1,14 +1,11 @@
 import Constants from './constants';
 const initialState = {
   isLoading: false,
-  live: [],
-  unedited: [],
-  hidden: [],
+  list: [],
 }
 
 function images(state = initialState, action) {
   switch (action.type) {
-
     case Constants.IS_LOADING:
       return {
         ...state,
@@ -20,46 +17,40 @@ function images(state = initialState, action) {
         isLoading: false
       }
 
-    case Constants.ADD_TO_LIVE:
+    case Constants.ADD_TO_IMAGES:
       return {
         ...state,
-        live: [...state.live, ...action.images],
+        list: [...state.list, ...action.images],
       }
-    case Constants.REMOVE_FROMTO_LIVE:
-      // FIXME:
-      // return {
-      //   ...state,
-      //   live: [...state.live, ...action.images],isLoading: true
-      // }
 
-    case Constants.ADD_TO_UNEDITED:
+    case Constants.UPDATE_IMAGE_DATA:
       return {
         ...state,
-        unedited: [...state.unedited, ...action.images],
+        list: (state.list.map((img, index) => {
+          if (img.id && action.image && parseInt(img.id) === parseInt(action.image.id)) {
+            return image(img, action)
+          } else return img;
+        })),
       }
-    case Constants.REMOVE_FROMNEDITED:
-      // FIXME:
-      // return {
-      //   ...state,
-      //   isLoading: true
-      // }
-
-    case Constants.ADD_TO_HIDDEN:
-      return {
-        ...state,
-        hidden: [...state.hidden, ...action.images],
-      }
-    case Constants.REMOVE_FROM_HIDDEN:
-      // FIXME:
-      // return {
-      //   ...state,
-      //   isLoading: true
-      // }
 
     default: return state;
 
   }
   return state;
+}
+
+
+function image(state = {}, action) {
+  switch (action.type) {
+    case Constants.UPDATE_IMAGE_DATA:
+      return {
+        ...state,
+        ...action.image,
+      }
+      break;
+    default: return state;
+  return state;
+  }
 }
 
 export default images;

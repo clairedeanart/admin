@@ -22,7 +22,7 @@ class Lightbox extends Component {
 
   componentDidMount() {
     if (this.props.open) {
-      this.mount(this.props);
+      if (!this.portal) this.mount(this.props);
     }
   }
 
@@ -31,6 +31,7 @@ class Lightbox extends Component {
       this.mount(nextProps);
     } else if (!nextProps.open && this.props.open) {
       this.unmount();
+      return;
     } else if (nextProps.open && this.props.open) {
       this.mount(nextProps);
     }
@@ -57,9 +58,9 @@ class Lightbox extends Component {
       this.portal = document.createElement('div');
       this.portal.className = 'lightbox';
       document.body.appendChild(this.portal);
+      this.doRender(props);
+      setTimeout(this.reveal.bind(this), 10);
     }
-    this.doRender(props);
-    setTimeout(this.reveal.bind(this), 10);
   }
 
   doRender(props) {
@@ -68,7 +69,6 @@ class Lightbox extends Component {
     if (this.props.hideCloseIcon) {
       closeIcon = null;
     }
-
 
     var imageDimensions = this.getImageDimensions(props.image)
 
@@ -135,13 +135,13 @@ class Lightbox extends Component {
 
   handleClick(e) {
     if (e.target.className === 'lightbox__backdrop') {
-      this.unmount();
+      this.props.close();
     }
     if (e.target.classList.contains('lightbox__close-icon')) {
-      this.unmount();
+      this.props.close();
     }
     if (e.target.dataset.forceClose) {
-      this.unmount();
+      this.props.close();
     }
   }
 

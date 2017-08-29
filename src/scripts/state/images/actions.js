@@ -1,12 +1,20 @@
 import Constants from './constants';
 
-export let addTo = function addTo(list, images) {
+export let append = function append(images) {
   return {
     images,
-    type: Constants[`ADD_TO_${list.toUpperCase()}`]
+    type: Constants.ADD_TO_IMAGES,
+  }
+}
+
+export let updateImageData = function updateImageData(image) {
+  return {
+    image,
+    type: Constants.UPDATE_IMAGE_DATA,
   }
 }
 
 export default {
-  addTo,
+  append,
+  updateImageData
 }

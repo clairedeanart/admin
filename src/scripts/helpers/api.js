@@ -1,6 +1,6 @@
 import request from 'superagent';
-const API_URL = 'http://api.clairedeanart.com'
-// const API_URL = 'http://localhost:4000';
+// const API_URL = 'http://api.clairedeanart.com'
+const API_URL = 'http://localhost:4000';
 
 export let get = function get(route, query) {
   return makeRequest('get', route)
@@ -8,6 +8,10 @@ export let get = function get(route, query) {
 
 export let post = function post(route, data) {
   return makeRequest('post', route, data)
+}
+
+export let put = function post(route, data) {
+  return makeRequest('put', route, data)
 }
 
 export let authenticate = function authenticate() {
@@ -52,6 +56,7 @@ let makeRequest = function(method, route, data) {
 export default {
   get,
   post,
+  put,
   authenticate,
   upload,
 }

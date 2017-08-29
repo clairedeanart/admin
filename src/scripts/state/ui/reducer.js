@@ -4,6 +4,7 @@ const initialState = {
   isLoading: false,
   lightboxOpen: false,
   lightboxImage: {},
+  lightboxImageList: null, // One of ['live', 'unedited', 'hidden']
 }
 
 function ui(state = initialState, action) {
@@ -14,12 +15,14 @@ function ui(state = initialState, action) {
         ...state,
         lightboxOpen: true,
         lightboxImage: action.image,
+        lightboxImageList: action.listType,
       }
     case Constants.CLOSE_LIGHTBOX:
       return {
         ...state,
         lightboxOpen: initialState.lightboxOpen,
         lightboxImage: initialState.lightboxImage,
+        lightboxImageList: null,
       }
     default: return state;
   }

@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import cx from 'classnames';
+import Transition from 'react-transition-group/Transition';
 
 class GalleryImage extends Component {
 
   constructor(props) {
   	super(props);
   	this.state = {
+      show: false,
       hover: false,
       name: props.image.name || '',
       editName: false,
@@ -13,31 +15,13 @@ class GalleryImage extends Component {
     };
 
     this.nameInput = null;
+
   }
 
   hover(enter) {
     this.setState({
       hover: enter === 'enter'
     });
-  }
-
-  handleChange(key, e) {
-    var state = this.state
-    var changes = this.state.changes;
-
-    state[key] = e.target.value;
-    state.changes[key] = e.target.value;
-
-    this.setState(state);
-  }
-
-  toggleFieldEditState(key, e) {
-    e.stopPropagation();
-    var state = this.state;
-    state[`edit${key}`] = !state[`edit${key}`]
-    if (this.nameInput)
-      this.nameInput.focus()
-    this.setState( state );
   }
 
   render() {
@@ -47,23 +31,17 @@ class GalleryImage extends Component {
     } = this.props;
     var hover = cx({
       ' grid__item--hover': this.state.hover
-    })
-    var titleInput =
-      (this.state.editName)
+    });
+    console.log('image!', image)
+    var unsaved = (
+      image.unsaved
       ? (
-        <div className='edit-field-wrapper edit-field-wrapper--editing'>
-          <input
-            ref={(i) => { this.nameInput = i}}
-            type='text' onChange={this.handleChange.bind(this, 'name')}
-            value={this.state.name}
-          />
+        <div className='grid__item__alert'>
+           <h4>Unsaved</h4>
         </div>
-      ) : (
-        <div onClick={this.toggleFieldEditState.bind(this, 'Name')} className='edit-field-wrapper'>
-          <i className='icon-pencil'></i>
-          <h4>{this.state.name}</h4>
-        </div>
-      );
+      ) : null
+    )
+
     return (
       <div
         key={`image-${index}${image.id}`}
@@ -72,34 +50,52 @@ class GalleryImage extends Component {
         onMouseLeave={this.hover.bind(this, 'leave')}
         className={'grid__item'+hover}
       >
-        <div className='grid__item__menu'>
-          <div className='grid__item__menu-item row'>
-            <div
-              onClick={this.toggleFieldEditState.bind(this, 'Name')}
-              className='col-xs-12 edit-field-wrapper'
-            >
-              <i className='icon-pencil'></i>
-              <h4>{this.state.name}</h4>
-            </div>
-            <div
-              className='col-xs-12 edit-field-wrapper edit-field-wrapper--editing'
-            >
-              <input
-                ref={(i) => { this.nameInput = i}}
-                type='text' onChange={this.handleChange.bind(this, 'name')}
-                value={this.state.name}
-              />
-            </div>
-          </div>
-          <div className='grid__item__menu-item'>
-            <i className='icon-pencil'></i>
-            <h4>View</h4>
-          </div>
-        </div>
+        { unsaved }
         <img src={image.location} />
+        <div className='grid__item__top-menu'>
+          <h4>{image.name || 'Untitled'}</h4>
+        </div>
+        <ItemMenu
+          image={this.props.image}/>
       </div>
     )
   }
+}
+
+const ItemMenu = ({
+  image
+}) => {
+  // Publicy visible properties
+  // 'name',
+  // 'medium',
+  // 'date',
+  // 'dimensions',
+  // 'price',
+  // 'sold',
+  // 'tags',
+
+  return (
+    <div className='row grid__item__menu'>
+      <div className='grid__item__menu-item col-xs-12'>
+        <p className='row-header'>Medium: {image.medium}</p>
+      </div>
+      <div className='grid__item__menu-item col-xs-12'>
+        <p className='row-header'>Date: {image.date}</p>
+      </div>
+      <div className='grid__item__menu-item col-xs-12'>
+        <p className='row-header'>Dimensions: {image.dimensions}</p>
+      </div>
+      <div className='grid__item__menu-item col-xs-12'>
+        <p className='row-header'>Price: ${image.price}</p>
+      </div>
+      <div className='grid__item__menu-item col-xs-12'>
+        <p className='row-header'>Sold: {image.sold ? 'Yes' : 'No'}</p>
+      </div>
+      <div className='grid__item__menu-item col-xs-12'>
+        <p className='row-header'>Tags: {image.tags}</p>
+      </div>
+    </div>
+  )
 }
 
 export default GalleryImage

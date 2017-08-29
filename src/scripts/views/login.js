@@ -33,7 +33,7 @@ class Login extends Component {
       Cache.set('token', res.token)
       this.props.router.push('/')
     }).catch((error) => {
-      console.log('error', error)
+      console.error('error', error)
     });
   }
 

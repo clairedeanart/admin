@@ -1,8 +1,9 @@
 import Constants from './constants';
 
-export let openLightbox = function openLightbox(image) {
+export let openLightbox = function openLightbox(image, listType) {
   return {
     image,
+    listType,
     type: Constants.OPEN_LIGHTBOX,
   }
 }

@@ -31,10 +31,34 @@
       "src": "fontawesome"
     },
     {
+      "uid": "3def559c3c39b8500882e02892b7daa8",
+      "css": "pictures",
+      "code": 59395,
+      "src": "entypo"
+    },
+    {
+      "uid": "381da2c2f7fd51f8de877c044d7f439d",
+      "css": "picture",
+      "code": 59396,
+      "src": "fontawesome"
+    },
+    {
       "uid": "c77fd2fd065b5fe16d6f2b41e190b266",
       "css": "pencil",
       "code": 59397,
       "src": "entypo"
+    },
+    {
+      "uid": "3c961c1a8d874815856fc6637dc5a13c",
+      "css": "file-image",
+      "code": 61893,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "026007bd17bfc67f3fe013199676f620",
+      "css": "dollar",
+      "code": 61781,
+      "src": "fontawesome"
     }
   ]
 }

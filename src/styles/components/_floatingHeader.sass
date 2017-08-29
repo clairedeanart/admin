@@ -1,5 +1,4 @@
-$bounce: cubic-bezier(.96,-.25,0,1.15)
-$floatingHeaderHeight: 85px
+$floatingHeaderHeight: 65px
 
 .floating-header--margin
   // height: $floatingHeaderHeight
@@ -19,7 +18,7 @@ $floatingHeaderHeight: 85px
   overflow: hidden
   display: flex
   justify-content: center
-  transition: all 300ms ease-in-out
+  transition: all 300ms $smooth
 
   &.floating-header--float
     box-shadow: $menu-shadow
@@ -29,10 +28,9 @@ $floatingHeaderHeight: 85px
     display: flex
     flex-direction: row
 
-
   .floating-header__inner
-    padding-left: ms(1)
-    padding-right: ms(1)
+    // padding-left: ms(1)
+    // padding-right: ms(1)
     display: flex
     justify-content: center
     align-items: center
@@ -40,23 +38,36 @@ $floatingHeaderHeight: 85px
     height: 100%
     position: absolute
     transform: translateY(0)
-    transition: all 300ms ease-in-out
+    transition: transform 380ms $bounce, opacity 400ms $smooth
     // width: 100%
   .floating-header__menu
     margin-left: ms(1)
     margin-right: ms(1)
     border-bottom: solid 1px $white
+    opacity: 1
     // border-bottom: solid 1px $secondary
-    transition: all 220ms ease-in
+    transition: transform 580ms $bounce, opacity 300ms $smooth
     &.floating-header__menu--active
-      transform: scale(1.1)
+      // transform: scale(1.1)
+      // opacity: 1
       border-bottom: solid 1px $secondary
   .floating-header__edit-mode
-    transform: translateY(100px) scale(0.9)
-    transition: all 300ms ease-in-out
+    transform: translateY(80px)
+    opacity: 0
+    transition: transform 380ms $bounce, opacity 300ms $smooth
 
   &.floating-header--edit
     .floating-header__inner
-      transform: translateY(-100px) scale(0.9)
+      transform: translateY(-80px)
+      opacity: 0
     .floating-header__edit-mode
       transform: translateY(0)
+      opacity: 1
+      transition: transform 580ms $bounce, opacity 400ms $smooth
+
+.page-header.floating-header
+  width: 100%
+  .floating-header__inner.container
+    width: 100%
+    flex-direction: row
+    justify-content: space-around

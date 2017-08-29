@@ -1,4 +1,3 @@
-$bounce: cubic-bezier(.96,-.25,0,1.15)
 
 .lightbox
   height: 100%
@@ -39,7 +38,7 @@ $bounce: cubic-bezier(.96,-.25,0,1.15)
     background-color: rgba(0,0,0,0)
     display: flex
     justify-content: center
-    align-items: center
+    align-items: flex-end
 
   .lightbox__backdrop
     cursor: zoom-out
@@ -47,13 +46,13 @@ $bounce: cubic-bezier(.96,-.25,0,1.15)
     cursor: initial
 
   .lightbox__backdrop
-    transition: all 500ms ease
+    transition: all 500ms $smooth
   .lightbox__close-icon__wrapper
     transition: all 600ms $bounce
   .lightbox__image__wrapper
     transition: all 440ms $bounce
   .lightbox__image
-    transition: transform 440ms $bounce 100ms
+    transition: all 440ms $bounce 100ms
 
   &.lightbox--fade-in
     .lightbox__backdrop, .lightbox__close-icon__wrapper
@@ -77,6 +76,6 @@ $bounce: cubic-bezier(.96,-.25,0,1.15)
     // left: 0
     // height: 100%
     // width: 100%
-    transition: all 500ms ease-out
+    transition: all 500ms $ease-out
 
   // &.lightbox--fade-in

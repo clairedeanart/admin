@@ -14,11 +14,17 @@ class Input extends Component {
     super(props);
     this.state = {
       hasContent: false,
+      dirty: this.hasContent(props.value),
       valid: true,
       errors: [],
-      value: '',
     };
     this.key = props.formKey || props.label.toLowerCase();
+
+    this.setHasContent = this.setHasContent.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setHasContent(this.hasContent(nextProps.value));
   }
 
   handleChange = (e) => {
@@ -35,9 +41,6 @@ class Input extends Component {
       }
     }
 
-    this.setState({
-      value: value
-    });
     this.props.handleUserInput(this.key, value);
   }
 
@@ -54,7 +57,7 @@ class Input extends Component {
   }
 
   hasContent(input) {
-    return input && input.trim() && input.trim().length
+    return input && input.trim() && input.trim().length > 1
   }
 
   createIcon() {
@@ -73,7 +76,13 @@ class Input extends Component {
   }
 
   render() {
-    let {className, iconClassName, id, type, label} = this.props;
+    let {
+      className,
+      iconClassName,
+      id,
+      type,
+      label,
+    } = this.props;
     let hasContent = cx({
       ' dirty': this.state.dirty
     });
@@ -87,11 +96,14 @@ class Input extends Component {
     let half = cx({
       ' half': this.props.half
     });
+    let small = cx({
+      ' input-group--sm': this.props.small
+    });
 
     return (
-      <div id={id} className={className+" input-group" + hasContent + hasIcon + half}>
+      <div id={id} className={className+" input-group" + hasContent + hasIcon + half + small}>
         <input
-          value={this.state.value}
+          value={this.props.value}
           onChange={this.handleChange}
           onKeyPress={this.handleKeyPress}
           type={type}
@@ -109,7 +121,8 @@ class Input extends Component {
 
 Input.propTypes = {
   handleUserInput: React.PropTypes.func.isRequired,
-  label: React.PropTypes.string.isRequired
+  label: React.PropTypes.string.isRequired,
+  value: React.PropTypes.string.isRequired,
 };
 
 Input.defaultProps = {
@@ -122,6 +135,9 @@ Input.defaultProps = {
   id: '',
   isRequired: false,
   submitOnEnter: false,
+  formKey: '',
+  value: '',
+  small: false,
 };
 
 export default Input;

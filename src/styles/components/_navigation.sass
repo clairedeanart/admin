@@ -24,8 +24,36 @@
     margin-left: ms(1)
     font-size: ms(1)
     cursor: pointer
-    transition: all 220ms ease
+    transition: all 220ms $smooth
     a
       color: $secondary
     &:hover
       border-bottom: solid 1px $secondary
+
+.page-header
+  // padding-top: ms(1)
+  display: flex
+  flex-direction: row
+  margin-bottom: ms(4)
+  // justify-content: space-between
+  .page-header__title
+
+  .page-header__buttons
+    display: flex
+    justify-content: space-around
+    align-items: flex-end
+    flex-direction: row
+    .page-header__button:not(:last-of-type)
+      margin-right: ms(-1)
+
+.page-header__buttons--fixed
+  position: fixed
+  width: 100vw
+  top: ms(1)
+  right: ms(2)
+  display: flex
+  align-items: flex-end
+  justify-content: flex-end !important
+
+.page-header__dropdown-menu
+  z-index: 2000

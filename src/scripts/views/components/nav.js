@@ -14,7 +14,7 @@ class Nav extends Component {
 
         <ul className='navigation__menu'>
           <li className='navigation__menu__item'>
-            <Link to="/content/edit/new">Content</Link>
+            <Link to="/content/edit/live">Content</Link>
           </li>
           <li className='navigation__menu__item'>
             <Link to="/upload">Upload</Link>

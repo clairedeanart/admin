@@ -8,7 +8,7 @@
     &, *
       font-size: ms(0)
     line-height: ms(0)
-    padding: ms(-6) ms(-3)
+    padding: ms(-2) ms(0)
   @else if $size == lg
     &, *
       font-size: ms(2)
@@ -23,6 +23,7 @@
 @mixin btn-color($color: $primary-pop, $outlined: false, $text-color: $white)
   border: $border-width solid $color
   @if $outlined
+    background: $white
     .btn__icon
       fill: $color
     &, *
@@ -30,7 +31,7 @@
       &:hover, &:active
         color: $color
     &:hover, &:active
-      background: rgba($color, 0.10)
+      background-color: lighten($color, 60%)
   @else
     color: $text-color
     background: $color

@@ -9,7 +9,6 @@ import {
   browserHistory,
   IndexRoute,
 } from 'react-router';
-import {connect} from 'react-redux';
 import Api from './helpers/api';
 
 import Template from './views/components/template';
@@ -21,6 +20,10 @@ import Gallery from './views/gallery/layout';
 import Settings from './views/settings';
 
 class Root extends Component {
+  constructor(props) {
+  	super(props);
+  	this.state = {};
+  }
   authenticate(nextState, replace, callback) {
     Api.authenticate()
     .then((authed) => {
@@ -46,7 +49,6 @@ class Root extends Component {
             <Route path="upload" component={Upload} />
             <Route path="edit">
               <IndexRoute component={Gallery}/>
-              <Route path="new" component={Gallery} type='new'/>
               <Route path="live" component={Gallery} type='live' />
               <Route path="hidden" component={Gallery} type='hidden' />
             </Route>
