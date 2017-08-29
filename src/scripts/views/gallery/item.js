@@ -32,7 +32,6 @@ class GalleryImage extends Component {
     var hover = cx({
       ' grid__item--hover': this.state.hover
     });
-    console.log('image!', image)
     var unsaved = (
       image.unsaved
       ? (

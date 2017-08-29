@@ -69,13 +69,12 @@ class Content extends Component {
     .then(res => {
       let saved = {
         ...res,
-        unsaved: false,
+        unsaved: true
       }
-      this.props.updateImageData(saved);
       this.setState({
-        image: saved,
         dropdownOpen: false,
       });
+      this.props.updateImageData(saved);
     }).catch((error) => {
       console.error('error', error);
     });
