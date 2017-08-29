@@ -34,7 +34,7 @@ class Content extends Component {
   componentDidMount() {
     window.document.addEventListener('scroll', (e) => {
       let top = document.body.scrollTop;
-      if (top > 20) {
+      if (top > 3) {
         this.setState({
           floatingHeader: true,
         });
