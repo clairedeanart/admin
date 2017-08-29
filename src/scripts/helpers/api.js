@@ -1,6 +1,6 @@
 import request from 'superagent';
-// const API_URL = 'http://api.clairedeanart.com'
-const API_URL = 'http://localhost:4000';
+const API_URL = 'http://api.clairedeanart.com'
+// const API_URL = 'http://localhost:4000';
 
 export let get = function get(route, query) {
   return makeRequest('get', route)
