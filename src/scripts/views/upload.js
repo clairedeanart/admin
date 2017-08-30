@@ -1,12 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Api from '../helpers/api';
-import Gallery from './gallery/list';
-// const Masonry = require('masonry-layout');
-// const imagesLoaded = require('imagesloaded')
-import StackGrid, { transitions } from "react-stack-grid";
 import cx from 'classnames';
-const { scaleDown } = transitions;
 
 var Dropzone = require('react-dropzone');
 
@@ -118,7 +113,7 @@ class Upload extends Component {
     var loading = (
       this.state.loading
       ? (
-        <div className='loadin'>
+        <div className='loading'>
 
         </div>
       ) : null

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import UIActions from '../../state/ui/actions';
+import ImagesActions from '../../state/images/actions';
+import UiActions from '../../state/ui/actions';
 import Lightbox from '../components/lightbox';
 import Masonry from 'react-masonry-component';
 import _ from 'underscore';
-import cx from 'classnames';
 import Item from './item';
 
 class Gallery extends Component {
@@ -20,13 +20,14 @@ class Gallery extends Component {
       image: {},
     };
 
-    this.handleClick = this.handleClick.bind(this);
+    this.selectItem = this.selectItem.bind(this);
     this.closeLightbox = this.closeLightbox.bind(this);
     this.renderImage = this.renderImage.bind(this);
   }
 
   openLightbox(image, index, e) {
-    this.props.openLightbox(image, this.props.type);
+    this.lightboxOpen = true;
+    this.props.actions.ui.openLightbox(image, this.props.type);
     this.setState({
       lightboxOpen: !this.state.lightboxOpen,
       image: {
@@ -37,15 +38,24 @@ class Gallery extends Component {
   }
 
   closeLightbox() {
-    this.props.closeLightbox()
+    this.lightboxOpen = false;
+    this.props.actions.ui.closeLightbox()
     this.setState({
       lightboxOpen: false,
       image: { }
     });
   }
 
-  handleClick(key, image, index, e) {
-
+  selectItem(image, index, e) {
+    setTimeout(() => {
+      if (this.lightboxOpen) return;
+      let change = {
+        ...image,
+        selected: !image.selected,
+      }
+      this.props.actions.images.updateImageData(change);
+      this.props.actions.ui.updateLightboxImageData(change);
+    }, 200)
   }
 
   renderImage(image, index) {
@@ -54,6 +64,7 @@ class Gallery extends Component {
         key={`image-render-${index}${image.id}`}
         image={image}
         index={index}
+        selectItem={this.selectItem.bind(this, image, index)}
         openLightbox={this.openLightbox.bind(this, image, index)}
       />
     )
@@ -101,9 +112,13 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(UIActions , dispatch)
+  return {
+    actions: {
+      ui: bindActionCreators(UiActions, dispatch),
+      images: bindActionCreators(ImagesActions, dispatch),
+    }
+  }
 }
-
 export default connect(
   mapStateToProps,
   mapDispatchToProps

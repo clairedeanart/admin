@@ -14,7 +14,15 @@ export let updateImageData = function updateImageData(image) {
   }
 }
 
+export let saveImageData = function saveImageData(image) {
+  return {
+    image,
+    type: Constants.SAVE_IMAGE_DATA,
+  }
+}
+
 export default {
   append,
-  updateImageData
+  updateImageData,
+  saveImageData,
 }

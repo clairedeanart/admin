@@ -1,8 +1,6 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import createSagaMiddleware from 'redux-saga'
-import { routerReducer, routerMiddleware } from 'react-router-redux';
 import reducer from './rootReducer';
-import { browserHistory } from 'react-router';
 
 const sagaMiddleware = createSagaMiddleware();
 

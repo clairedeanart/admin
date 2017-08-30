@@ -22,18 +22,14 @@ const CSS_BUILD_DIR_PROD = path.resolve(__dirname, './build/static/css');
 const CSS_SOURCE_DIR = './src/styles/**/*.*';
 
 gulp.task('dev', function() {
-  console.log("should init")
-  runSequence('fonts', 'sass', 'bs', 'watch');
-});
-
-gulp.task('bs', function() {
   bs.init(null, {
     proxy: "http://localhost:3000",
     port: 3001,
     open: true,
     notify: true
   });
-})
+  runSequence('fonts', 'sass', 'watch');
+});
 
 gulp.task('watch', function() {
   console.log('watching')
@@ -59,7 +55,7 @@ gulp.task('fonts', function() {
     .pipe(gulp.dest('./public'))
     .on('end', function() {
       console.log('end')
-        // del(['public/styles', 'fonts']);
+        del(['public/src/styles', 'fonts']);
     });
 });
 

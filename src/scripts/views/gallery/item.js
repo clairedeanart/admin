@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import cx from 'classnames';
-import Transition from 'react-transition-group/Transition';
 
 class GalleryImage extends Component {
 
@@ -24,33 +23,49 @@ class GalleryImage extends Component {
     });
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.image.unsaved && !nextProps.image.unsaved) {
+      this.setState(this.state);
+    }
+  }
+
+  getBanner(show, title, location) {
+    location = ` grid__item__alert--${location}`;
+    return (
+      show
+      ? (
+        <div className={'grid__item__alert'+location}>
+           <h4>{title}</h4>
+        </div>
+      ) : null
+    )
+  }
+
   render() {
     const {
       image,
       index,
     } = this.props;
-    var hover = cx({
+    const hover = cx({
       ' grid__item--hover': this.state.hover
     });
-    var unsaved = (
-      image.unsaved
-      ? (
-        <div className='grid__item__alert'>
-           <h4>Unsaved</h4>
-        </div>
-      ) : null
-    )
+
+    const selected = cx({
+      ' grid__item--selected': image.selected,
+    });
 
     return (
       <div
         key={`image-${index}${image.id}`}
-        onClick={this.props.openLightbox}
+        onDoubleClick={this.props.openLightbox}
+        onClick={this.props.selectItem}
         onMouseEnter={this.hover.bind(this, 'enter')}
         onMouseLeave={this.hover.bind(this, 'leave')}
-        className={'grid__item'+hover}
+        className={'grid__item'+hover+selected}
       >
-        { unsaved }
-        <img src={image.location} />
+        { this.getBanner(image.unsaved, 'Unsaved', 'top') }
+        { this.getBanner(image.selected, 'Selected', 'bottom') }
+        <img alt='' src={image.location} />
         <div className='grid__item__top-menu'>
           <h4>{image.name || 'Untitled'}</h4>
         </div>

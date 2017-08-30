@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import cx from 'classnames';
 import _ from 'underscore'
+import PropTypes from 'prop-types'
 
 // $untouched The field has not been touched yet
 // $touched The field has been touched
@@ -24,7 +25,8 @@ class Input extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setHasContent(this.hasContent(nextProps.value));
+    if (nextProps.value)
+      this.setHasContent(this.hasContent(nextProps.value));
   }
 
   handleChange = (e) => {
@@ -45,7 +47,7 @@ class Input extends Component {
   }
 
   handleKeyPress = (e) => {
-    if (e.which === 13 || e.key === 'Enter' && _.isFunction(this.props.submitOnEnter)) {
+    if ((e.which === 13 || e.key === 'Enter') && _.isFunction(this.props.submitOnEnter)) {
       this.props.submitOnEnter()
     }
   }
@@ -57,7 +59,7 @@ class Input extends Component {
   }
 
   hasContent(input) {
-    return input && input.trim() && input.trim().length > 1
+    return !!(input && input.trim() && input.trim().length > 1)
   }
 
   createIcon() {
@@ -89,10 +91,10 @@ class Input extends Component {
     let hasIcon = cx({
       ' has-icon': !!iconClassName
     });
-    let validity = cx({
-      ' valid': this.state.valid,
-      ' invalid': this.state.invalid
-    });
+    // let validity = cx({
+    //   ' valid': this.state.valid,
+    //   ' invalid': this.state.invalid
+    // });
     let half = cx({
       ' half': this.props.half
     });
@@ -105,6 +107,7 @@ class Input extends Component {
         <input
           value={this.props.value}
           onChange={this.handleChange}
+          onBlur={this.setHasContent.bind(this, this.hasContent(this.props.value))}
           onKeyPress={this.handleKeyPress}
           type={type}
           name={label.toLowerCase()}/>
@@ -120,9 +123,9 @@ class Input extends Component {
 }
 
 Input.propTypes = {
-  handleUserInput: React.PropTypes.func.isRequired,
-  label: React.PropTypes.string.isRequired,
-  value: React.PropTypes.string.isRequired,
+  handleUserInput: PropTypes.func.isRequired,
+  label: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
 };
 
 Input.defaultProps = {

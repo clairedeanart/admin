@@ -4,27 +4,39 @@ const initialState = {
   isLoading: false,
   lightboxOpen: false,
   lightboxImage: {},
-  lightboxImageList: null, // One of ['live', 'unedited', 'hidden']
 }
 
 function ui(state = initialState, action) {
   switch (action.type) {
-
     case Constants.OPEN_LIGHTBOX:
       return {
         ...state,
         lightboxOpen: true,
-        lightboxImage: action.image,
-        lightboxImageList: action.listType,
+        lightboxImage: {
+          ...state.image,
+          ...action.image
+        },
       }
     case Constants.CLOSE_LIGHTBOX:
       return {
         ...state,
         lightboxOpen: initialState.lightboxOpen,
         lightboxImage: initialState.lightboxImage,
-        lightboxImageList: null,
       }
-    default: return state;
+    case Constants.UPDATE_IMAGE_DATA:
+      return {
+        ...state,
+        lightboxImage: {
+          ...state.image,
+          ...action.image
+        },
+      }
+    case Constants.SAVE_IMAGE_DATA:
+      return {
+        ...state,
+        lightboxImage: action.image,
+      }
+    default:
   }
   return state;
 }

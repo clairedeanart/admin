@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { compose } from 'redux';
 import Input from './components/input';
 import Api from '../helpers/api';
 
@@ -55,6 +54,7 @@ class Login extends Component {
                 <Input
                   label='Username'
                   type='email'
+                  value={this.state.form.username}
                   iconClassName='icon-user-secret'
                   handleUserInput={this.handleInput.bind(this)}
                 />
@@ -63,6 +63,7 @@ class Login extends Component {
                 <Input
                   label='Password'
                   type='password'
+                  value={this.state.form.password}
                   iconClassName='icon-lock'
                   submitOnEnter={this.login}
                   handleUserInput={this.handleInput.bind(this)}

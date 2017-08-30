@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import TetherComponent from 'react-tether'
 import ImagesActions from '../state/images/actions';
+import UiActions from '../state/ui/actions';
 import cx from 'classnames';
 import Api from '../helpers/api';
 import Input from './components/input';
-import Select from 'react-select';
 const _ = require('underscore');
 
 class Content extends Component {
@@ -16,9 +16,7 @@ class Content extends Component {
   	this.state = {
       floatingHeader: false,
       dropdownOpen: false,
-      image: {
-        name: props.ui.lightboxImage.name || '',
-      }
+      image: {}
     };
 
     this.isTarget = this.isTarget.bind(this);
@@ -47,34 +45,24 @@ class Content extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    let {
-      images,
-    } = this.props;
-    let image = {};
-    if (nextProps.ui.lightboxImage.id) {
-      let list = this.props.images.list;
-      image = _.find(list, (img) => {return img.id == nextProps.ui.lightboxImage.id})
-    }
-    let dropdownOpen = this.state.dropdownOpen;
-    if (!image.id) {
-      dropdownOpen = false;
-    }
+    let { images } = this.props;
+    let { lightboxImage } = nextProps.ui;
+    let { dropdownOpen } = this.state;
+    let image = lightboxImage;
+    if (!image.id) dropdownOpen = false;
     this.setState({ image, dropdownOpen });
   }
 
   save(image) {
-    image = image || this.state.image;
-    console.log('saving image', image);
     Api.put(`/images/${this.props.ui.lightboxImage.id}`, image )
     .then(res => {
-      let saved = {
+      let change = {
         ...res,
-        unsaved: true
+        unsaved: false,
       }
-      this.setState({
-        dropdownOpen: false,
-      });
-      this.props.updateImageData(saved);
+      this.props.actions.images.saveImageData(change);
+      this.props.actions.ui.saveLightboxImageData(change);
+      this.setState({ dropdownOpen: false });
     }).catch((error) => {
       console.error('error', error);
     });
@@ -88,23 +76,21 @@ class Content extends Component {
     if (val.value) val = val.value;
     var state = this.state;
     state.image[key] = val;
-    state.image.unsaved = true;
-    this.setState({ state });
-    // this.setUnsavedChanges();
+    this.setUnsavedChanges(state.image);
   }
 
-  setUnsavedChanges() {
+  setUnsavedChanges(image) {
     let change = {
-      ...this.state.image,
-      id: this.props.ui.lightboxImage.id,
+      ...image,
       unsaved: true
     }
-    this.props.updateImageData(change);
+    this.props.actions.images.updateImageData(change);
+    this.props.actions.ui.updateLightboxImageData(change);
   }
 
   setAndSave(key) {
     let image = this[`set${key}`]()
-    this.save(image)
+    this.save(image);
   }
 
   setHidden() {
@@ -123,7 +109,7 @@ class Content extends Component {
     image = {
       ...image,
       unedited: false,
-      hidden: !image.hidden,
+      hidden: false,
     };
 
     this.setState({ image });
@@ -143,146 +129,153 @@ class Content extends Component {
     const imageEditMode = cx({
       ' floating-header--edit': this.props.ui.lightboxOpen,
     });
+    const image = this.props.ui.lightboxImage;
+    const isHidden = image && (image.hidden || image.unedited);
     const unsaved = cx({
-      ' btn btn-secondary': this.state.image && this.state.image.unsaved,
-      ' btn-outlined btn-primary': this.state.image && !this.state.image.unsaved,
+      ' btn btn-secondary': image && image.unsaved,
+      ' btn-outlined btn-primary': image && !image.unsaved,
     })
-    const isHidden = this.state.image && this.state.image.hidden
+    let imageMenu = null;
+    // if (image && image.id) {
+    //   // FIXME: Move this to a component
+      imageMenu = (
+        <div className='floating-header__inner floating-header__edit-mode container'>
+          <Input
+            small
+            handleUserInput={this.handleChange}
+            submitOnEnter={this.save.bind(this, image)}
+            type='text'
+            label='Image name'
+            formKey='name'
+            value={this.state.image.name || ''}
+            className='page-header__title'
+          />
+          <div className='page-header__buttons'>
+            <TetherComponent
+              attachment="bottom center"
+              classPrefix={'dropdown-menu'}
+              offset={'-14px 0px'}
+              classes={{
+                'out-of-bounds': false
+              }}
+              constraints={[{
+                to: 'window',
+                attachment: 'together',
+                pin: true
+              }]}
+            >
+              <div
+                onClick={this.toggleDropdown}
+                className='page-header__button btn-outlined btn--sm btn-primary'>
+                Info
+              </div>
+              {
+                this.state.dropdownOpen &&
+                <div className="dropdown-menu__inner">
+
+                
+
+                  <Input
+                    small
+                    handleUserInput={this.handleChange}
+                    submitOnEnter={this.save.bind(this, image)}
+                    type='text'
+                    label='Dimensions'
+                    formKey='dimensions'
+                    value={this.state.image.dimensions || ''}
+                    className='page-header__title'
+                  />
+                  <Input
+                    small
+                    handleUserInput={this.handleChange}
+                    submitOnEnter={this.save.bind(this, image)}
+                    type='text'
+                    label='Medium'
+                    formKey='medium'
+                    value={this.state.image.medium || ''}
+                    className='page-header__title'
+                  />
+                  <Input
+                    small
+                    handleUserInput={this.handleChange}
+                    submitOnEnter={this.save.bind(this, image)}
+                    type='text'
+                    label='Price'
+                    formKey='price'
+                    iconClassName={'icon-dollar'}
+                    value={image.price || ''}
+                    className='page-header__title'
+                  />
+                <div className='row m-t-xs-1'>
+                    <p
+                      className='col-xs-3'
+                      style={{
+                        fontSize: '16px',
+                        textAlign: 'center',
+                      }}>
+                      Sold
+                    </p>
+                    <div className='col-xs-4'>
+                      <input
+                        name='sold'
+                        id='isSold'
+                        checked={image.sold}
+                        type='radio'
+                        onChange={this.handleChange.bind(this, 'sold', true)}/>
+                      <label
+                        style={{
+                          fontSize: '15px'
+                        }}
+                        htmlFor='isSold'>Yes!</label>
+                    </div>
+                    <div className='col-xs-4'>
+                      <input
+                        name='sold'
+                        id='isNotSold'
+                        type='radio'
+                        checked={!image.sold}
+                        onChange={this.handleChange.bind(this, 'sold', false)}/>
+                      <label
+                        style={{
+                          fontSize: '15px'
+                        }}
+                        htmlFor='isNotSold'>No</label>
+                    </div>
+                  </div>
+                </div>
+              }
+            </TetherComponent>
+            <div
+              onClick={this.setAndSave.bind(this, isHidden ? 'Live' : 'Hidden')}
+              className='page-header__button btn-outlined btn--sm btn-primary'>
+              { isHidden ? 'Mark as live' : 'Mark as hidden'}
+            </div>
+            <div
+              onClick={this.save.bind(this, image)}
+              className={'page-header__button btn--sm ' + unsaved}>
+              Save
+            </div>
+          </div>
+        </div>
+      )
+    // }
     return (
       <div className="container">
         <div className='floating-header--margin'></div>
         <div className={`page-header floating-header${floatHeader}${imageEditMode}`}>
           <div className='floating-header__inner'>
             <div className={`floating-header__menu ${this.isTarget('/content/edit/live') ? 'floating-header__menu--active' : ''}`}>
-              <Link to='/content/edit/live'>
+              <Link to='/live'>
                 <h3>Live</h3>
               </Link>
             </div>
             <div className={`floating-header__menu ${this.isTarget('/content/edit/hidden') ? 'floating-header__menu--active' : ''}`}>
-              <Link to='/content/edit/hidden'>
+              <Link to='/hidden'>
                 <h3>Hidden</h3>
               </Link>
             </div>
           </div>
-          <div className='floating-header__inner floating-header__edit-mode container'>
-            <Input
-              small
-              handleUserInput={this.handleChange}
-              submitOnEnter={this.save}
-              type='text'
-              label='Image name'
-              formKey='name'
-              value={this.state.image.name}
-              className='page-header__title'
-            />
-            <div className='page-header__buttons'>
-              <TetherComponent
-                attachment="bottom center"
-                classPrefix={'dropdown-menu'}
-                offset={'-20px 0px'}
-                classes={{
-                  'out-of-bounds': false
-                }}
-                constraints={[{
-                  to: 'window',
-                  attachment: 'together',
-                  pin: true
-                }]}
-              >
-                <div
-                  onClick={this.toggleDropdown}
-                  className='page-header__button btn-outlined btn--sm btn-primary'>
-                  Info
-                </div>
-                {
-                  this.state.dropdownOpen &&
-                  <div className="dropdown-menu__inner">
-                    <h3 className=''>
-                      Image info
-                    </h3>
-
-                    <Input
-                      small
-                      handleUserInput={this.handleChange}
-                      submitOnEnter={this.save}
-                      type='text'
-                      label='Dimensions'
-                      formKey='dimensions'
-                      value={this.state.image.dimensions}
-                      className='page-header__title'
-                    />
-                    <Input
-                      small
-                      handleUserInput={this.handleChange}
-                      submitOnEnter={this.save}
-                      type='text'
-                      label='Medium'
-                      formKey='medium'
-                      value={this.state.image.medium}
-                      className='page-header__title'
-                    />
-                    <Input
-                      small
-                      handleUserInput={this.handleChange}
-                      submitOnEnter={this.save}
-                      type='text'
-                      label='Price'
-                      formKey='price'
-                      iconClassName={'icon-dollar'}
-                      value={this.state.image.price}
-                      className='page-header__title'
-                    />
-                    <div className='row'>
-                      <p
-                        className='col-xs-12'
-                        style={{
-                          marginTop: '5px',
-                          fontSize: '13px'
-                        }}>
-                        Sold
-                      </p>
-                      <div className='col-xs-6'>
-                        <input
-                          name='sold'
-                          id='isSold'
-                          checked={this.state.image.sold}
-                          type='radio'
-                          onChange={this.handleChange.bind(this, 'sold', true)}/>
-                        <label
-                          style={{
-                            fontSize: '16px'
-                          }}
-                          htmlFor='isSold'>Yes!</label>
-                      </div>
-                      <div className='col-xs-6'>
-                        <input
-                          name='sold'
-                          id='isNotSold'
-                          checked={!this.state.image.sold}
-                          type='radio'
-                          onChange={this.handleChange.bind(this, 'sold', false)}/>
-                        <label
-                          style={{
-                            fontSize: '16px'
-                          }}
-                          htmlFor='isNotSold'>Eh no..</label>
-                      </div>
-                    </div>
-                  </div>
-                }
-              </TetherComponent>
-              <div
-                onClick={this.setAndSave.bind(this, isHidden ? 'Live' : 'Hidden')}
-                className='page-header__button btn-outlined btn--sm btn-primary'>
-                { isHidden ? 'Mark as live' : 'Mark as hidden'}
-              </div>
-              <div
-                onClick={this.save.bind(this, this.state.image)}
-                className={'page-header__button btn--sm ' + unsaved}>
-                Save
-              </div>
-            </div>
-          </div>
+          { imageMenu }
         </div>
         { this.props.children }
       </div>
@@ -295,10 +288,12 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(
-    ImagesActions,
-    dispatch,
-  )
+  return {
+    actions: {
+      ui: bindActionCreators(UiActions, dispatch),
+      images: bindActionCreators(ImagesActions, dispatch),
+    }
+  }
 }
 
 export default connect(

@@ -22,9 +22,11 @@
 
 .grid__item
   position: relative
-  cursor: zoom-in
+  cursor: pointer
   overflow: hidden
-  transition: all 120ms $ease-in
+  transition: all 120ms $smooth
+  img
+    transition: all 220ms $smooth
   .grid__item__menu, .grid__item__top-menu
     position: absolute
     z-index: 10
@@ -40,11 +42,13 @@
     right: 0
     opacity: 0.95
     background: linear-gradient(rgba(30, 30, 30, 1), rgba(0, 0, 0, 0))
+    transition: all 120ms $smooth
   .grid__item__menu
     bottom: 0
     left: 0
     right: 0
-    transform: translateY(ms(8))
+    transform: translateY(ms(9))
+    transition: all 120ms $smooth
 
   &.grid__item--small
     width: calc(20%)
@@ -67,6 +71,19 @@
       transform: translateY(0)
       transition: all 120ms $ease-out
 
+  &.grid__item--selected
+    img
+      opacity: 0.44
+      transform: scale(0.93)
+      transition: all 120ms $bounce
+
+    .grid__item__menu
+      opacity: 0
+      transform: translateY(ms(9))
+      transition: all 120ms $ease-out
+    .grid__item__top-menu
+      transform: scale(0.93)
+      background: linear-gradient(rgba(50, 50, 50, 1), rgba(0, 0, 0, 0.1))
   .grid__item__alert
     z-index: 1000
     top: 0
@@ -74,7 +91,20 @@
     right: 0
     position: absolute
     padding: ms(-3)
-    background-color: $light-purple
+    background-color: $warning
+    color: $white
+    text-align: center
+    display: flex
+    justify-content: center
+    align-items: center
+    &.grid__item__alert--bottom
+      background-color: lighten($light-green, 10%)
+      top: initial
+      bottom: 0
+      font-size: 13px
+      padding: ms(-8)
+
+    &.grid__item__alert--top
 
 .edit-field-wrapper
   cursor: text

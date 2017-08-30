@@ -14,7 +14,23 @@ export let closeLightbox = function closeLightbox() {
   }
 }
 
+export let updateLightboxImageData = function updateLightboxImageData(image) {
+  return {
+    image,
+    type: Constants.UPDATE_IMAGE_DATA,
+  }
+}
+
+export let saveLightboxImageData = function saveLightboxImageData(image) {
+  return {
+    image,
+    type: Constants.SAVE_IMAGE_DATA,
+  }
+}
+
 export default {
   openLightbox,
   closeLightbox,
+  updateLightboxImageData,
+  saveLightboxImageData,
 }

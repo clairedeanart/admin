@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+// import { bindActionCreators } from 'redux';
 import Gallery from './list';
 const _ = require('underscore');
 
@@ -28,7 +28,7 @@ class GalleryWrapper extends Component {
       else images.live.push(img);
     });
 
-    return _.sortBy(images[type], 'createdAt')
+    return _.sortBy(images[type], (i) => i.createdAt)
   }
 
   render() {

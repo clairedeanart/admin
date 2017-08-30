@@ -1,6 +1,5 @@
 import request from 'superagent';
-const API_URL = 'http://api.clairedeanart.com'
-// const API_URL = 'http://localhost:4000';
+const API_URL = process.env.API_URL
 
 export let get = function get(route, query) {
   return makeRequest('get', route)
@@ -33,22 +32,25 @@ let getRootUrl = function getRootUrl(path) {
 
 let makeRequest = function(method, route, data) {
   return new Promise(function(resolve, reject) {
-    let token = Cache.get('token')
+    let token = Cache.get('token');
     let r = request[method](getRootUrl(route));
-
     let files = data && data.files ? data.files : false;
-    if (files) r.field('photos', files)
 
-    if ((method === 'post' && !files) || method === 'put') r.send(data)
+    if (files)
+      r.field('photos', files)
 
-    if (token) r.set('Authorization', 'Bearer ' + token)
-    r.then((response) => {
-      resolve(response.body)
-    })
-    .catch((e) => {
+    if ((method === 'post' && !files) || method === 'put')
+      r.send(data)
+
+    if (token)
+      r.set('Authorization', 'Bearer ' + token)
+
+    return r.then((response) => {
+      return resolve(response.body)
+    }).catch((e) => {
       if (e && e.response && e.response.body && e.response.body.error) {
-        reject(e.response.body.error)
-      } else reject(e.response)
+        return reject(e.response.body.error)
+      } else return reject(e.response)
     })
   });
 }

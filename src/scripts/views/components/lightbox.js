@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import cx from 'classnames';
 
 class Lightbox extends Component {
   constructor(props) {
@@ -64,7 +63,7 @@ class Lightbox extends Component {
   }
 
   doRender(props) {
-    if (!props.image || props.image && !props.image.elem) return
+    if (!props.image || (props.image && !props.image.elem)) return
     var closeIcon = (<i className="lightbox__close-icon icon-cancel-circled" onClick={this.handleClick} />);
     if (this.props.hideCloseIcon) {
       closeIcon = null;
@@ -93,6 +92,7 @@ class Lightbox extends Component {
           <img
             className='lightbox__image'
             src={props.image.data.location}
+            alt={props.image.data.name || props.image.data.id}
             style={
               {
                 transform: `translateY(${imageDimensions.height}px)`,
@@ -107,7 +107,7 @@ class Lightbox extends Component {
   }
 
   getImageDimensions(image) {
-    if (!image || image && !image.elem) return;
+    if (!image || (image && !image.elem)) return;
     var wh = window.innerHeight;
     var ww = window.innerWidth;
     var width = "";
