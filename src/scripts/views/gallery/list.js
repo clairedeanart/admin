@@ -5,6 +5,7 @@ import ImagesActions from '../../state/images/actions';
 import UiActions from '../../state/ui/actions';
 import Lightbox from '../components/lightbox';
 import Masonry from 'react-masonry-component';
+import Mousetrap from 'mousetrap';
 import _ from 'underscore';
 import Item from './item';
 
@@ -18,11 +19,25 @@ class Gallery extends Component {
       hover: false,
       images: props.images,
       image: {},
+      multiselect: false,
     };
 
     this.selectItem = this.selectItem.bind(this);
     this.closeLightbox = this.closeLightbox.bind(this);
     this.renderImage = this.renderImage.bind(this);
+  }
+
+  componentDidMount() {
+    Mousetrap.bind('command', (e) => {
+      this.setState({
+        multiselect: true
+      });
+    }, 'keydown');
+    Mousetrap.bind('command', (e) => {
+      this.setState({
+        multiselect: false
+      });
+    }, 'keyup');
   }
 
   openLightbox(image, index, e) {
@@ -64,6 +79,7 @@ class Gallery extends Component {
         key={`image-render-${index}${image.id}`}
         image={image}
         index={index}
+        multiselect={this.state.multiselect}
         selectItem={this.selectItem.bind(this, image, index)}
         openLightbox={this.openLightbox.bind(this, image, index)}
       />

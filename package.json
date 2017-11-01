@@ -50,6 +50,7 @@
     "modular-scale": "^4.4.1",
     "modularscale-sass": "^3.0.3",
     "morgan": "^1.8.2",
+    "mousetrap": "^1.6.1",
     "node-neat": "^2.0.0-beta.0",
     "object-assign": "4.1.1",
     "path": "^0.12.7",
@@ -87,7 +88,7 @@
   },
   "scripts": {
     "dev": "gulp dev",
-    "start": "node scripts/start.js",
+    "start": "node scripts/build.js && node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
     "postinstall": "gulp build-production && npm run build"

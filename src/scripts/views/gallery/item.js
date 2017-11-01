@@ -14,6 +14,7 @@ class GalleryImage extends Component {
     };
 
     this.nameInput = null;
+    this.onSelect = this.onSelect.bind(this);
 
   }
 
@@ -41,14 +42,15 @@ class GalleryImage extends Component {
     )
   }
 
+  onSelect(e) {
+    this.props.multiselect ? this.props.selectItem(e) : this.props.openLightbox(e)
+  }
+
   render() {
     const {
       image,
       index,
     } = this.props;
-    const hover = cx({
-      ' grid__item--hover': this.state.hover
-    });
 
     const selected = cx({
       ' grid__item--selected': image.selected,
@@ -57,14 +59,14 @@ class GalleryImage extends Component {
     return (
       <div
         key={`image-${index}${image.id}`}
-        onDoubleClick={this.props.openLightbox}
-        onClick={this.props.selectItem}
+        onClick={this.onSelect}
         onMouseEnter={this.hover.bind(this, 'enter')}
         onMouseLeave={this.hover.bind(this, 'leave')}
-        className={'grid__item'+hover+selected}
+        className={'grid__item'+selected}
       >
         { this.getBanner(image.unsaved, 'Unsaved', 'top') }
         { this.getBanner(image.selected, 'Selected', 'bottom') }
+        <div className=''></div>
         <img alt='' src={image.location} />
         <div className='grid__item__top-menu'>
           <h4>{image.name || 'Untitled'}</h4>
@@ -94,9 +96,6 @@ const ItemMenu = ({
         <p className='row-header'>Medium: {image.medium}</p>
       </div>
       <div className='grid__item__menu-item col-xs-12'>
-        <p className='row-header'>Date: {image.date}</p>
-      </div>
-      <div className='grid__item__menu-item col-xs-12'>
         <p className='row-header'>Dimensions: {image.dimensions}</p>
       </div>
       <div className='grid__item__menu-item col-xs-12'>
@@ -104,9 +103,6 @@ const ItemMenu = ({
       </div>
       <div className='grid__item__menu-item col-xs-12'>
         <p className='row-header'>Sold: {image.sold ? 'Yes' : 'No'}</p>
-      </div>
-      <div className='grid__item__menu-item col-xs-12'>
-        <p className='row-header'>Tags: {image.tags}</p>
       </div>
     </div>
   )
